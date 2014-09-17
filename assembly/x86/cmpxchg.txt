@@ -1,0 +1,12 @@
+# From http://courses.engr.illinois.edu/ece390/archive/spr2002/books/labmanual/inst-ref-cmpxchg.html
+
+B.20 CMPXCHG: Compare and Exchange
+
+    CMPXCHG r/m8,reg8             ; 0F B0 /r             [PENT]
+    CMPXCHG r/m16,reg16           ; o16 0F B1 /r         [PENT]
+    CMPXCHG r/m32,reg32           ; o32 0F B1 /r         [PENT]
+
+CMPXCHG compares its destination (first) operand to the value in AL, AX or EAX (depending on the size of the instruction). If they are equal, it copies its source (second) operand into the destination and sets the zero flag. Otherwise, it clears the zero flag and leaves the destination alone.
+
+CMPXCHG is intended to be used for atomic operations in multitasking or multiprocessor environments. To safely update a value in shared memory, for example, you might load the value into EAX, load the updated value into EBX, and then execute the instruction lock cmpxchg [value],ebx. If value has not changed since being loaded, it is updated with your desired new value, and the zero flag is set to let you know it has worked. (The LOCK prefix prevents another processor doing anything in the middle of this operation: it guarantees atomicity.) However, if another processor has modified the value in between your load and your attempted store, the store does not happen, and you are notified of the failure by a cleared zero flag, so you can go round and try again.
+
