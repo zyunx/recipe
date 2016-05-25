@@ -1,4 +1,4 @@
-code-recipe
+recipe
 ===========
 
 code recipe in various languages
